@@ -5,6 +5,8 @@ from topn.preprocess.preprocessor import DataPreprocessor
 
 
 # Unit tests for DataPreprocessor class
+
+# Creating mock data for testing
 @pytest.fixture
 def mock_raw_data():
     data = pd.DataFrame({
@@ -14,6 +16,13 @@ def mock_raw_data():
     })
 
     return data
+
+# Loading mock data for testing
+@pytest.fixture
+def sample_raw_data():
+    data = pd.read_csv("tests/resources/ratings.csv")
+    return data
+
 
 def test_clean_data(mock_raw_data):
     preprocessor = DataPreprocessor(mock_raw_data)
@@ -25,3 +34,15 @@ def test_transform_data(mock_raw_data):
     preprocessor.transform_data()
     assert mock_raw_data['userId'].dtype == 'int8'
     assert mock_raw_data['movieId'].dtype == 'int8'
+
+
+def test_clean_data_2(sample_raw_data):
+    preprocessor = DataPreprocessor(sample_raw_data)
+    preprocessor.clean_data()
+    assert sample_raw_data.shape == (20, 4)
+
+def test_transform_data_2(sample_raw_data):
+    preprocessor = DataPreprocessor(sample_raw_data)
+    preprocessor.transform_data()
+    assert sample_raw_data['userId'].dtype == 'int8'
+    assert sample_raw_data['movieId'].dtype == 'int8'
