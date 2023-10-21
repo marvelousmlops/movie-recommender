@@ -1,7 +1,7 @@
 # Author: Marvelous MLOps
 
-import pandas as pd
+from pandas import read_csv
 
 def load_data(file_path):
-    data = pd.read_csv(file_path)
+    data = read_csv(file_path)
     return data

@@ -1,6 +1,6 @@
 # Author: Marvelous MLOps
 
-import pandas as pd
+from pandas import DataFrame
 from sklearn.metrics.pairwise import cosine_similarity
 
 
@@ -16,7 +16,7 @@ class RecommenderSystem:
 
     def _calculate_movie_similarity(self):
         movie_similarity = cosine_similarity(self.user_movie_matrix.T)
-        movie_similarity_matrix = pd.DataFrame(movie_similarity, index=self.user_movie_matrix.columns, columns=self.user_movie_matrix.columns)
+        movie_similarity_matrix = DataFrame(movie_similarity, index=self.user_movie_matrix.columns, columns=self.user_movie_matrix.columns)
         return movie_similarity_matrix
 
     def get_top_n_recommendations(self, movie_id, n=5):

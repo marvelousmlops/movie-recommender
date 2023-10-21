@@ -1,5 +1,5 @@
 import pytest
-import pandas as pd
+from pandas import read_csv
 
 from topn.evaluation.evaluator import RecommenderEvaluator
 from topn.model.recommender import RecommenderSystem
@@ -21,7 +21,7 @@ def mock_gold_data():
 # Loading mock data for testing
 @pytest.fixture
 def sample_raw_data():
-    data = pd.read_csv("tests/resources/processed_ratings.csv")
+    data = read_csv("tests/resources/processed_ratings.csv")
     return data
 
 
