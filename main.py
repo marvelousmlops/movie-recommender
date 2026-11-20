@@ -1,4 +1,7 @@
+from pathlib import Path
+
 from topn.model.recommender import RecommenderSystem
+from topn.model.city_popularity import get_popular_movies_by_city
 from topn.utils.helper import load_data
 from topn.preprocess.preprocessor import DataPreprocessor
 from topn.evaluation.evaluator import RecommenderEvaluator
@@ -9,6 +12,23 @@ if __name__ == "__main__":
 
     file_path = "data/ratings.csv"
     data = load_data(file_path)
+
+    # City-level rankings need separate movie-title and user-city lookup files.
+    movies_path = Path("data/movies.csv")
+    users_path = Path("data/users.csv")
+    if movies_path.exists() and users_path.exists():
+        city_rankings = get_popular_movies_by_city(
+            data,
+            load_data(movies_path),
+            load_data(users_path),
+        )
+        print("Popular movies by city (ranked by number of ratings):")
+        print(city_rankings.to_string(index=False))
+    else:
+        print(
+            "Skipping city rankings: provide data/movies.csv (movieId,title) "
+            "and data/users.csv (userId,city)."
+        )
 
     preprocessor = DataPreprocessor(data)
     preprocessor.clean_data()
@@ -22,7 +42,6 @@ if __name__ == "__main__":
     top_recommendations = rec_sys.get_top_n_recommendations(movie_id)
     print(f"Top recommendations for movie ID {movie_id}: {top_recommendations}")
 
-    
     gold_data = {
         101: [548, 60, 102, 531, 863],
         102: [247, 103, 270, 188, 523],
